@@ -15,7 +15,7 @@ I don't own any other HMDs, but will probably get a Quest2 at some point in the 
 
 PSVR users don't have access to the game logs (please correct me if I'm wrong!), so no PSVR support, obviously. Ever...
 
->***TL;DR:*** Expect some growing pains when it comes to anything other than (and IMHO - inferior to \***wink**\* \***wink**\*) Windows PC + SteamVR. All I can do is promiss to do my best to help you out.
+>***TL;DR:*** Expect some growing pains when it comes to anything other than (and IMHO - inferior to \***wink**\* \***wink**\*) Windows PC + SteamVR. All I can do is promise to do my best to help you out.
 
 ## How this auto splitter works (parsing the game log)
 Most auto splitters read the RAM, seaching for known areas of the game instance in memory. They interpret those values, monitor them, and react to changes. I've chosen not to go that route. 
