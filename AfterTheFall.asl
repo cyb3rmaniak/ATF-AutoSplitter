@@ -1,5 +1,5 @@
-state("LiveSplit", "v1.2.35043 (Steam)")
-//state("AfterTheFall", "v1.2.35043 (Steam)")
+//state("LiveSplit", "v1.2.35043 (Steam)")
+state("AfterTheFall", "v1.2.35043 (Steam)")
 {
 	
 }
@@ -395,8 +395,8 @@ init
 	}
 	
 	// For debug without launching VR - uncomment this, and the very first line in this script (//state("LiveSplit"...)
-	if (version == "")
-		version = "v1.2.35043 (Steam)";
+	// if (version == "")
+	// 	version = "v1.2.35043 (Steam)";
 	
 	if (version == "")
 	{
@@ -407,11 +407,6 @@ init
 	// Open the log file
 	var appDataDir = System.Environment.GetEnvironmentVariable("appdata");
 	string logPath = appDataDir + @"\..\LocalLow\Vertigo Games\AfterTheFall\Player.log";
-	//string logPath = appDataDir + @"\..\LocalLow\Vertigo Games\AfterTheFall\Player-prev.log"; 
-	//string logPath = appDataDir + @"\..\LocalLow\Vertigo Games\AfterTheFall\2022_02_22\Player.log";
-	//string logPath = appDataDir + @"\..\LocalLow\Vertigo Games\AfterTheFall\Chinatown_Finished\Player.log";
-	//string logPath = appDataDir + @"\..\LocalLow\Vertigo Games\AfterTheFall\LiveSplit_2022-02-24_19_45.Player.log";
-	//string logPath = appDataDir + @"\..\LocalLow\Vertigo Games\AfterTheFall\2022_02_25\Player-prev.log";
 	
 	if (!File.Exists(logPath)) 
 	{
