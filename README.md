@@ -77,6 +77,8 @@ I am not responsible for ***ANYTHING*** that this code does to your machine, you
 It could potentially erase your entire hard drive, but only after sending your private nude pics to your boss and clearing out your Bitcoin account.
 Even if it causes your hamster (or you) extreme vertigo - I could NOT be blamed for it.
 
-***YOU WERE WARNED!*** I'm providing this code AS-IS. I've wrote all 900+ lines of it in notepad using extremely large fonts on my smart phone after binge-drinking for a week. It was written from start to finish during ***one*** intensive night of speed coding, and I haven't tested it once.
+***YOU WERE WARNED!*** I'm providing this code AS-IS. I've wrote all 900+ lines of it in a chinese clone of the Post-it notes app, using extremely large fonts, on my smart phone after binge-drinking for a week. It was written from start to finish during ***one*** intensive night of coding, and I haven't tested it once. I think parts came to me at a waking dream, or when I blacked out for an hour or two. 
+
+Other parts simply appeared while I was taking bathroom breaks. I honestly not sure where those actually came from, and I'm not going to investigate it further. I've seen too many horror movies to know better!
 
 By using this code - you take full responsibility for it! (If the continuum breaks - it's ***your*** fault).
