@@ -14,9 +14,10 @@ startup
 	// Always work in game time, since it can be paused during loading times, between missions and in the safe rooms.
 	timer.CurrentTimingMethod = TimingMethod.GameTime;
 	
-	vars.gameTimeOnSceneStart = System.TimeSpan.Zero;
-
 	// Usefull methods
+
+	#region Usefull methods
+
 	Action<string> DebugOutput = (text) => 
 	{
 		print("[AfterTheFall Autosplitter] " + text);
@@ -25,8 +26,8 @@ startup
 
 	Action<string> DelayNextUpdate = (reason) => 
 	{
-		vars.NextUpdate = System.DateTime.Now.AddSeconds(0.5);
-		vars.DebugOutput("Delaying next update (" + reason + ").");
+		// vars.NextUpdate = System.DateTime.Now.AddSeconds(0.5);
+		// vars.DebugOutput("Delaying next update (" + reason + ").");
 	};
 	vars.DelayNextUpdate = DelayNextUpdate;
 	
@@ -215,7 +216,11 @@ startup
 	};
 	vars.JumpToSection = JumpToSection;
 	
-	vars.NextUpdate = System.DateTime.Now;
+	#endregion // Usefull methods
+
+	vars.previousMapText = " ";
+	vars.NextUpdate = null;
+	vars.gameTimeOnSceneStart = System.TimeSpan.Zero;
 
 	// Game info
 	vars.logPath			= null;
@@ -434,10 +439,14 @@ init
 
 update
 {
-	if (System.DateTime.Now < vars.NextUpdate)
+	if (vars.NextUpdate != null)
 	{
-		//vars.DebugOutput((vars.NextUpdate - System.DateTime.Now).TotalSeconds + " seconds before next update");
-		return false;
+		if (System.DateTime.Now < vars.NextUpdate)
+		{
+			//vars.DebugOutput((vars.NextUpdate - System.DateTime.Now).TotalSeconds + " seconds before next update");
+			return false;
+		}
+		vars.NextUpdate = null;
 	}
 	
 	// When we return false here, it prevents the rest of the actions from running (start, split, reset etc.).
@@ -484,7 +493,7 @@ update
 				vars.DebugOutput("Jumping to Hub split.");
 				timer.CurrentSplitIndex = 0;
 				vars.sceneName = newSceneName;
-				vars.SetMapNameText(" ");
+				vars.SetMapNameText(vars.previousMapText);
 				continue;
 			}
 			else
@@ -721,15 +730,16 @@ update
 
 				vars.PauseGameTime("Session Ended");
 				vars.IsSessionActive = false;
+				vars.previousMapText = "(Previous was " + vars.sceneName + " - " + reason + ")";
 
 				if (reason == "Completed" || settings["Save times even when disconnected or failed mission"])
 				{
 					if (reason != "Completed")
 					{
 						vars.DebugOutput("Un-doing last split.");
-						vars.DebugOutput(timer.CurrentSplit.Name + ": " + timer.CurrentSplit.SplitTime.GameTime);
+						//vars.DebugOutput(timer.CurrentSplit.Name + ": " + timer.CurrentSplit.SplitTime.GameTime);
 						vars.timerModel.UndoSplit();
-						vars.DebugOutput(timer.CurrentSplit.Name + ": " + timer.CurrentSplit.SplitTime.GameTime); 
+						//vars.DebugOutput(timer.CurrentSplit.Name + ": " + timer.CurrentSplit.SplitTime.GameTime); 
 					}
 					else
 					{
@@ -883,7 +893,7 @@ exit
 	}
 	
 	if (timer.CurrentPhase == TimerPhase.Running)
-		vars.PauseGameTime();
+		vars.PauseGameTime("Game was closed");
 	
 	if (vars.logFileReader != null)
 	{
