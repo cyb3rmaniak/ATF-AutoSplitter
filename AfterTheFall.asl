@@ -321,6 +321,8 @@ startup
 		"BankCafeteria",		// Union Tower
 	};
 
+
+	// Get layout components to update later
 	foreach (var component in timer.Layout.LayoutComponents)
 	{
 		if (component.Component.ComponentName.StartsWith("Difficulty"))
@@ -364,8 +366,6 @@ startup
 			};
 			vars.SetMapNameText = SetMapNameText;
 		}
-			
-		//vars.DebugOutput("Component: " + component.ToString());
 	}
 }
 
@@ -430,9 +430,6 @@ init
 		}
 	}	
 
-	// vars.DebugOutput("timer.CurrentPhase: " + timer.CurrentPhase + ", timer.IsGameTimeInitialized: " + 
-	// 	timer.IsGameTimeInitialized + " , timer.IsGameTimePaused: " + timer.IsGameTimePaused);
-
 	vars.PauseGameTime("init");
 	timer.IsGameTimeInitialized = true;
 }
@@ -454,6 +451,8 @@ update
     if (version == "" || vars.logPath == null)
 		return false;
 		
+	// Read lines from the log and search for known ones...
+
 	string currLine = null;
 	while (vars.logFileReader != null) 
 	{
@@ -461,6 +460,8 @@ update
 		if (currLine == null) 
 			return false; // No line was read. No need to continue.
 		
+		#region Find known lines
+
 		// Check against known lines...
 		
 		var match = vars.regexes["SceneIsLoading"].Match(currLine);
@@ -864,6 +865,8 @@ update
 			vars.SetPlayersDisplayNames(displayNames);
 			continue;
 		}
+
+		#endregion // Find known lines
 	}
 	
 	// No recognized line was found.
