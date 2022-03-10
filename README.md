@@ -27,6 +27,14 @@ This is why this auto splitter reads the ATF game logs. Unless the developers de
 
 Additionaly - updates to the code to work with future versions of ATF can be done without needing to know how to use CheatEngine, what are pointer paths or how a memory scan works.
 
+### LiveSplit terminology you should know:
+- Splits are the named segments in the LiveSplit window. Splitting the timer means storing the current segment time in the split itself, and moving to the next one.
+- Sub-splits are a way to group splits by parenting splits to other splits. In our case, the main splits are the ones with the scene names (Skid Row), and the sub-splits are the ones with the specific mission sections under each of the scenes (Entrance safe room).
+- An attempt in LiveSplit starts when the timer is started after a reset, or the launch of LiveSplit. It ends when the timer is reset. This can be manually (from the LiveSplit menu), by the auto splitter, or by splitting until there are no more splits left (reached the end of the list).
+- The timer for the attempt (***Real Time***) never stops. In order to effectively pause the timer, ***Game Time*** is used instead.
+- ***Game Time*** is paused during loading screens, while waiting for all players to connect, or optionally - when all players are in a safe room.
+
+
 ### Operation (simplified):
 1. By default the auto splitter searches for `%appdata%\..\LocalLow\Vertigo Games\AfterTheFall\Player.log`.
 2. If the "Parse log from start" setting <!-- TODO: add link to settings --> is set to:
@@ -38,19 +46,12 @@ Additionaly - updates to the code to work with future versions of ATF can be don
 6. When the auto-splitter starts, it assumes you are in the Hub. The correct information will be updated in the next step.
 7. When a scene (mission/map) starts loading, the auto splitter will jump to the correct split, and then immediately usually to the first sub-split (an entrance safe room in most cases). Scene names from the game are translated to the names on the main splits [^1]. New maps added in later updates will need to be added to the lists in order for the auto splitter to work on them.
 8. Certain events, along with some settings defined by the user will trigger the timer to start, stop and split[^1].
-9. An attempt in LiveSplit:
-   1. Starts the first time the timer is started after a reset or the launch of the application. 
-   2. Ends depending on the settings used. Technically ends when the timer is reset (manually or by the auto splitter).
-   3. The timer for the attempt (***Real Time***) never stops. In order to effectively pause the timer, ***Game Time*** should be used instead.
-   4. ***Game Time*** is paused during loading screens, while waiting for all players to connect, or optionally - when all players are in a safe room. All times are saved as ***Game Time*** in the segments. ***Make sure that in the layout you choose to use Game Time!***. <!-- TODO: Add a link to instructions -->
-12. When a mission run has ended (disconnected from host, all team members are frozen or successfuly finished the mission) the times on each split are stored in the splits file, to be compared to on future runs.
-13. When voting on the next mission, the auto splitter will jump to the Limbo split.
-14. If a mission run ends successfuly - by default, the total game time for the entire mission will be saved on the main split of the mission. This can be changed using the settings.
+***Game Time*** in the segments. ***Make sure that in the layout you choose to use Game Time!***. <!-- TODO: Add a link to instructions -->
+9. When a mission run has ended (disconnected from host, all team members are frozen or successfuly finished the mission) the times on each split are stored in the splits file, to be compared to on future runs.
+10. When voting on the next mission, the auto splitter will jump to the Limbo split.
+11. If a mission run ends successfuly - by default, the total game time for the entire mission will be saved on the main split of the mission. This can be changed using the settings.
 
 >***TL;DR:*** The auto splitter reads one line at a time from the log. If it recognizes the message in that line - it will trigger actions in LiveSplit. An attempt starts when the timer is first started, and ends when it is reset. We use Game Time, that unlike Real Time, can be paused on demand (such as when loading scenes), and not count towards the attempt.
-
-[^1]: Splits are the named segments in the LiveSplit window. Sub-splits are a way to group splits, such that some are children of one the "main" splits. In our case the main splits are the ones with the scene names, and the sub-splits are the ones with the specific mission sections under each of the scenes.
-Splitting the timer means storing the current time in the current section and jumping to the next one.
 
 ### (Pro tip) - log "replay":
 While developing, I've made sure that you could "replay" old log files. Otherwise testing and debugging would have been a nightmare.
