@@ -3,13 +3,13 @@ A [LiveSplit](https://livesplit.org) auto splitter for the VR game [After The Fa
 
 In case you don't know what any of it means - LiveSplit is a very popular tool for speed-runners.
 Because it's an open source project, people can write custom components for it (and many do).
-An auto splitter is a component that can connect to some game instance, and control LiveSplit by reacting to events from the game.
+An auto splitter is a component that can connect to some game instance while it's running, and control LiveSplit by reacting to events from the game.
 For more details you check out [this page all about auto-splitters](https://github.com/LiveSplit/LiveSplit.AutoSplitters/blob/master/README.md).
 
 ## Platforms/Services/Compatibility
-I'm playing on a PC running Windows 10, using an HTC Vive (the old one) on SteamVR. I have NOT tested this on any other platform/service. Theoretically it should work, but minor tweaks would probably be necessary (such as adding hashes of other versions of the game, or disabling the version checking. Hahes are used to identify the version of the detected running game process and by default nothing will run if the version is unknown).
+I'm playing on a PC running Windows 10, using an HTC Vive (the old one) on SteamVR. I have not tested this on any other platform/service. Theoretically, it should work. But minor tweaks would probably be necessary (such as adding hashes of other versions of the game, or disabling the version checking. Hahes are used to identify the version of the detected running game process and by default nothing will run if the version is unknown).
 
-I don't have that information, but I imagine that the first person to try it on each platform will be able to provide those hashes (and/or other information) easily, and I'll update the code accordingly.
+I don't have that information, but I imagine that the first person to try it on each platform will be able to provide those hashes (and other information) easily, and I'll update the code accordingly.
 
 I don't own any other HMDs, but will probably get a Quest2 at some point in the future. Until then, I'll be limited with what I can do for the Quest users out there...
 
@@ -36,7 +36,7 @@ Additionaly - updates to the code to work with future versions of ATF can be don
 4. The lines are compared to formats of known log events using [regular expressions](https://en.wikipedia.org/wiki/Regular_expression).
 5. When a match is found - the auto splitter reacts and performs actions such as starting/stopping/resetting the timer, jumping to specific sections (splits) and updating some of the text labels in the layout (the ones displayed in the LiveSplit window).
 6. When the auto-splitter starts, it assumes you are in the Hub. The correct information will be updated in the next step.
-7. When a scene (mission/map) starts loading, the auto splitter will jump to the correct split, and then immediately usually to the first sub-split (an entrance safe room in most cases). Scene names from the game are translated to the names on the main splits [^1]. New maps added in later updates will need to be added to the lists in order for the auto-splitter to work on them.
+7. When a scene (mission/map) starts loading, the auto splitter will jump to the correct split, and then immediately usually to the first sub-split (an entrance safe room in most cases). Scene names from the game are translated to the names on the main splits [^1]. New maps added in later updates will need to be added to the lists in order for the auto splitter to work on them.
 8. Certain events, along with some settings defined by the user will trigger the timer to start, stop and split[^1].
 9. An attempt in LiveSplit:
    1. Starts the first time the timer is started after a reset or the launch of the application. 
@@ -46,6 +46,8 @@ Additionaly - updates to the code to work with future versions of ATF can be don
 12. When a mission run has ended (disconnected from host, all team members are frozen or successfuly finished the mission) the times on each split are stored in the splits file, to be compared to on future runs.
 13. When voting on the next mission, the auto splitter will jump to the Limbo split.
 14. If a mission run ends successfuly - by default, the total game time for the entire mission will be saved on the main split of the mission. This can be changed using the settings.
+
+>***TL;DR:*** The auto splitter reads one line at a time from the log. If it recognizes the message in that line - it will trigger actions in LiveSplit. An attempt starts when the timer is first started, and ends when it is reset. We use Game Time, that unlike Real Time, can be paused on demand (such as when loading scenes), and not count towards the attempt.
 
 [^1]: Splits are the named segments in the LiveSplit window. Sub-splits are a way to group splits, such that some are children of one the "main" splits. In our case the main splits are the ones with the scene names, and the sub-splits are the ones with the specific mission sections under each of the scenes.
 Splitting the timer means storing the current time in the current section and jumping to the next one.
@@ -60,7 +62,6 @@ This opens the door for interesting possibilities in the future, such as:
 - Adding detailed information to a video capture of a run ***after the fact***. Even one captured on a MetaBook Oculus Quest.
 - Verifying a run's validity **to some degree** by replaying the log file and comparing to the video captured.
 
->***TL;DR:*** The auto splitter reads one line at a time from the log, and if it recognizes the message in that line - it will trigger actions in Live Split. An attempt starts when the timer is first started, and ends when it is reset. We use Game Time, that unlike Real Time, can be paused on demand (such as when loading scenes), and not count towards the attempt.
 
 # DISCLAIMER:
 I'm working on this mainly because it's fun. Because I want to use this tool, even when not speed-running. Hopefully others will agree.
@@ -70,7 +71,6 @@ I've tried following other examples of auto-splitters, and asked questions in th
 However, there are very few auto-splitters out there that read and parse logs (the Talos Principle auto-splitter was a big help. Huge thanks to [u/Apple1417](https://www.reddit.com/user/Apple1417/) on Reddit for his reply to [this post](https://www.reddit.com/r/speedrun/comments/8du8lf/how_do_i_make_an_autosplitter_with_a_games_log/). It saved a lot of time and made things much clearer).
 
 Thanks to Tedder and Ero on the Speedrun Tool Development Discord I managed to clean up my code by directly accessing some low-level classes and methods from LiveSplit.Code.Model, and not relying on the built-in actions such as split(), reset() and start() as I did before. That approach works when you monitor the RAM. When you read lines from a log file, those actions make the code more complicated and hacky. Accessing the Model classes is not something you will see in most auto splitters, so examples for those might be sparse in case you want to edit and add features to this project.
-
 
 I am not responsible for ***ANYTHING*** that this code does to your machine, your LiveSplit installation, to the time-space continuum or to anything else for that matter. In this life or the next.
 
@@ -82,3 +82,6 @@ Even if it causes your hamster (or you) extreme vertigo - I could NOT be blamed 
 Other parts simply appeared while I was taking bathroom breaks. I honestly not sure where those actually came from, and I'm not going to investigate it further. I've seen too many horror movies to know better!
 
 By using this code - you take full responsibility for it! (If the continuum breaks - it's ***your*** fault).
+
+>***TL;DR:*** You can't blame me for anything. Ever.
+
