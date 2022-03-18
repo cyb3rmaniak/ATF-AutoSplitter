@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Layout version="1.6.1">
   <Mode>Vertical</Mode>
-  <X>1533</X>
-  <Y>81</Y>
+  <X>1488</X>
+  <Y>93</Y>
   <VerticalWidth>300</VerticalWidth>
   <VerticalHeight>566</VerticalHeight>
   <HorizontalWidth>-1</HorizontalWidth>
@@ -218,7 +218,7 @@
         <BackgroundColor>FF295FCC</BackgroundColor>
         <BackgroundColor2>FF0D1B39</BackgroundColor2>
         <BackgroundGradient>Horizontal</BackgroundGradient>
-        <Text1>(Previous was Junction (Horde) - Failed)</Text1>
+        <Text1>(Previous was Chinatown - Completed)</Text1>
         <Text2> </Text2>
         <Font1><![CDATA[AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABNTeXN0ZW0uRHJhd2luZy5Gb250BAAAAAROYW1lBFNpemUFU3R5bGUEVW5pdAEABAQLGFN5c3RlbS5EcmF3aW5nLkZvbnRTdHlsZQIAAAAbU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AgAAAAIAAAAGAwAAAAhTZWdvZSBVSQAAMEEF/P///xhTeXN0ZW0uRHJhd2luZy5Gb250U3R5bGUBAAAAB3ZhbHVlX18ACAIAAAABAAAABfv///8bU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AQAAAAd2YWx1ZV9fAAgCAAAAAwAAAAs=]]></Font1>
         <Font2><![CDATA[AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWIwM2Y1ZjdmMTFkNTBhM2EFAQAAABNTeXN0ZW0uRHJhd2luZy5Gb250BAAAAAROYW1lBFNpemUFU3R5bGUEVW5pdAEABAQLGFN5c3RlbS5EcmF3aW5nLkZvbnRTdHlsZQIAAAAbU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AgAAAAIAAAAGAwAAAAhTZWdvZSBVSQAAUEEF/P///xhTeXN0ZW0uRHJhd2luZy5Gb250U3R5bGUBAAAAB3ZhbHVlX18ACAIAAAAAAAAABfv///8bU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AQAAAAd2YWx1ZV9fAAgCAAAAAgAAAAs=]]></Font2>
@@ -345,15 +345,15 @@
         <Reset>True</Reset>
         <Split>True</Split>
         <CustomSettings>
-          <Setting id="Pause timer when all players enter a safe room" type="bool">True</Setting>
+          <Setting id="Pause timer when all players enter a safe room" type="bool">False</Setting>
           <Setting id="Split timer when all players enter a safe room" type="bool">True</Setting>
           <Setting id="Split timer when pushing button to exit safe room" type="bool">True</Setting>
           <Setting id="Split timer between mission sections" type="bool">True</Setting>
           <Setting id="Stop timer as soon as last section is clear (don't wait for button press)" type="bool">False</Setting>
           <Setting id="Set game time on the main split when mission is complete" type="bool">True</Setting>
           <Setting id="Save times even when disconnected or failed mission" type="bool">True</Setting>
-          <Setting id="Reset timer when loading a new mission" type="bool">False</Setting>
-          <Setting id="Reset timer when loading a new mission, but only from the Hub" type="bool">True</Setting>
+          <Setting id="Reset timer when loading a new mission" type="bool">True</Setting>
+          <Setting id="Reset timer when loading a new mission, but only from the Hub" type="bool">False</Setting>
           <Setting id="Save game log copy when mission ends" type="bool">False</Setting>
           <Setting id="Save game log copy after game is closed" type="bool">True</Setting>
           <Setting id="Parse log from start" type="bool">True</Setting>
