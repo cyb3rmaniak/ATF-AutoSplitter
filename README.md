@@ -32,7 +32,7 @@ PSVR users don't have access to the game logs (please correct me if I'm wrong!),
 9. (Optional) - add a floating window in VR that will show LiveSplit while you'e playing. I personally use [XSOverlay](https://store.steampowered.com/app/1173510/XSOverlay) to pin the window to the back of my left hand.
 
 ## Troubleshooting
-1. If the layout isn't loaded (the LiveSplit window doesn't look like the screenshot above) - Right click the window and select **Open Layout -> From File...*** and select **AfterTheFall_AllMissions.lsl** in the directory you extracted ATF-AutoSplitter to.
+1. If the layout isn't loaded (the LiveSplit window doesn't look like the screenshot above) - Right click the window and select *Open Layout -> From File...* and select **AfterTheFall_AllMissions.lsl** in the directory you extracted ATF-AutoSplitter to.
 2. If LiveSplit doesn't react at all:
    1. Right click the LiveSplit window and select *Edit Layout...*
    2. Double-click the **Scriptable Auto Splitter** at the end of the list:
