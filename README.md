@@ -21,7 +21,7 @@ PSVR users don't have access to the game logs (please correct me if I'm wrong!),
 ## Quick Start
 1. Download LiveSplit from their official site: [http://livesplit.org/downloads/](http://livesplit.org/downloads/). (Tested on version 1.8.19)
 2. There is no installer. Extract it to a directory of your choice.
-3. Download the latest release of ATF-AutoSplitter and extract it to a directory of your choice.
+3. Download the [latest release](https://github.com/cyb3rmaniak/ATF-AutoSplitter/releases/) of ATF-AutoSplitter and extract it to a directory of your choice.
 4. Run LiveSplit.exe in the directory you extracted LiveSplit to.
 5. Right click the main window and select **Open Splits -> From File...**:
    1. ![image](https://user-images.githubusercontent.com/7516791/159006855-52979bb4-d8df-4c90-8bfb-7315ae1531c5.png)
