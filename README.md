@@ -9,7 +9,7 @@ For more details you can check out [this page all about auto-splitters](https://
 ![image](https://user-images.githubusercontent.com/7516791/159011595-1f0b477c-5338-451b-9173-d19ea6ffbead.png)
 
 ## Platforms/Services/Compatibility
-I'm playing on a PC running Windows 10, using an HTC Vive (the old one) on SteamVR. I have not tested this on any other platform/service. Theoretically, it should work. But minor tweaks would probably be necessary (such as adding hashes of other versions of the game, or disabling the version checking. Hahes are used to identify the version of the detected running game process and by default nothing will run if the version is unknown).
+I'm playing on a PC running Windows 10, using an HTC Vive (the old one) on SteamVR. I have not tested this on any other platform/service. Theoretically, it should work. But minor tweaks would probably be necessary (such as adding hashes of other versions of the game, or disabling the version checking. Hashes are used to identify the version of the detected running game process and by default nothing will run if the version is unknown).
 
 I don't have that information, but I imagine that the first person to try it on each platform will be able to provide those hashes (and other information) easily, and I'll update the code accordingly.
 
