@@ -28,7 +28,7 @@ PSVR users don't have access to the game logs (please correct me if I'm wrong!),
 5. Right click the main window and select *Open Splits -> From File...*
    1. ![image](https://user-images.githubusercontent.com/7516791/159006855-52979bb4-d8df-4c90-8bfb-7315ae1531c5.png)
 7. Select **AfterTheFall_AllMissions.lss** in the directory you extracted ATF-AutoSplitter to. This will load the splits info, and should automatically load the layout and the auto splitter scipt with it.
-8. Done. Launch AfterTheFall while AutoSplit is running in the background. It will automatically react to game events. At least for the current version of the game on Steam (v1.3.35721).
+8. Done. Launch After the Fall while AutoSplit is running in the background. It will automatically react to game events (at least for the current version of the game on Steam - v1.3.35721).
 9. (Optional) - add a floating window in VR that will show LiveSplit while you'e playing. I personally use [XSOverlay](https://store.steampowered.com/app/1173510/XSOverlay) to pin the window to the back of my left hand.
 
 ## Troubleshooting
