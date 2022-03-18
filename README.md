@@ -25,7 +25,7 @@ PSVR users don't have access to the game logs (please correct me if I'm wrong!),
 2. There is no installer. Extract it to a directory of your choice.
 3. Download the [latest release](https://github.com/cyb3rmaniak/ATF-AutoSplitter/releases/) of ATF-AutoSplitter and extract it to a directory of your choice.
 4. Run LiveSplit.exe in the directory you extracted LiveSplit to.
-5. Right click the main window and select **Open Splits -> From File...**:
+5. Right click the main window and select *Open Splits -> From File...*
    1. ![image](https://user-images.githubusercontent.com/7516791/159006855-52979bb4-d8df-4c90-8bfb-7315ae1531c5.png)
 7. Select **AfterTheFall_AllMissions.lss** in the directory you extracted ATF-AutoSplitter to. This will load the splits info, and should automatically load the layout and the auto splitter scipt with it.
 8. Done. Launch AfterTheFall while AutoSplit is running in the background. It will automatically react to game events. At least for the current version of the game on Steam (v1.3.35721).
@@ -34,11 +34,12 @@ PSVR users don't have access to the game logs (please correct me if I'm wrong!),
 ## Troubleshooting
 1. If the layout isn't loaded (the LiveSplit window doesn't look like the screenshot above) - Right click the window and select **Open Layout -> From File...*** and select **AfterTheFall_AllMissions.lsl** in the directory you extracted ATF-AutoSplitter to.
 2. If LiveSplit doesn't react at all:
-   1. Right click the LiveSplit window and select **Edit Layout...**. 
+   1. Right click the LiveSplit window and select *Edit Layout...*
    2. Double-click the **Scriptable Auto Splitter** at the end of the list:
       1. ![image](https://user-images.githubusercontent.com/7516791/159008147-4a502b61-855a-4f68-8142-72ffb2b4212e.png)
    3. Make sure Script Path (at the top) points to the correct location of **AfterTheFall.asl**:
       1. ![image](https://user-images.githubusercontent.com/7516791/159008363-b8bffbe9-1fcc-4ccf-955d-a0beed2abdd8.png)
+
 3. Any other issue - feel free to contact me in the ATF Discord (Cyb3rManiak#3419), or open an issue here (at the top).
 
 
