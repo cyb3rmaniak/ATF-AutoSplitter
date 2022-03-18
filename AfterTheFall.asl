@@ -1,5 +1,5 @@
-//state("LiveSplit", "v1.2.35043 (Steam)")
-state("AfterTheFall", "v1.2.35043 (Steam)")
+//state("LiveSplit", "v1.3.35721 (Steam)")
+state("AfterTheFall", "v1.3.35721 (Steam)")
 {
 	
 }
@@ -7,7 +7,7 @@ state("AfterTheFall", "v1.2.35043 (Steam)")
 startup
 {
 	refreshRate = 5;
-	
+	 
 	// Create and register a TimerModel to control Reset, Split and Start manually, instead of using actions.
 	vars.timerModel = new TimerModel() { CurrentState = timer };
 	
@@ -116,8 +116,8 @@ startup
 	{
 		vars.DebugOutput("Starting or un-pausing game time...");
 
-		// vars.DebugOutput("timer.CurrentPhase: " + timer.CurrentPhase + ", timer.IsGameTimeInitialized: " + 
-		// 	timer.IsGameTimeInitialized + " , timer.IsGameTimePaused: " + timer.IsGameTimePaused);
+		//  vars.DebugOutput("timer.CurrentPhase: " + timer.CurrentPhase + ", timer.IsGameTimeInitialized: " + 
+		//  	timer.IsGameTimeInitialized + " , timer.IsGameTimePaused: " + timer.IsGameTimePaused);
 			
 		if (timer.CurrentPhase == TimerPhase.Ended)
 			vars.ResetTimer();
@@ -172,9 +172,12 @@ startup
 		else
 		{
 			var splitIndexBeforeResetting = timer.CurrentSplitIndex;
+
+			vars.DebugOutput("splitIndexBeforeResetting: " + splitIndexBeforeResetting);
 			
 			vars.DebugOutput("Resetting and pausing timer");
 			vars.timerModel.Reset();
+			vars.DebugOutput("timer.CurrentSplitIndex: " + timer.CurrentSplitIndex);
 			timer.IsGameTimePaused = true;
 
 			// Resetting the timer sets the current split to -1. Jump back to the split before the reset.
@@ -185,7 +188,7 @@ startup
 
 	Action SplitTimer = () =>
 	{
-		vars.DebugOutput("Splitting timer. timer.CurrentTime: " + timer.CurrentTime); 
+		vars.DebugOutput("Splitting timer. timer.CurrentTime: " + timer.CurrentTime + ", timer.CurrentSplit.Name: " + timer.CurrentSplit.Name); 
 		vars.timerModel.Split();
 		
 		vars.DebugOutput("New section name: " + (timer.CurrentSplit == null ? "null" : timer.CurrentSplit.Name));
@@ -226,8 +229,8 @@ startup
 	vars.logPath			= null;
 	vars.currSection		= null;
 	vars.isLoadingScene 	= false;
-	vars.sceneName 			= "Hub";
 	vars.isInSafeRoom		= true;
+	vars.sceneName 			= "Hub";
 	
 	// Splits and sub-splits
 	vars.currSplit 			= null;
@@ -240,9 +243,9 @@ startup
 	settings.Add("Stop timer as soon as last section is clear (don't wait for button press)", false);
 	settings.Add("Set game time on the main split when mission is complete", true);
 	settings.Add("Save times even when disconnected or failed mission", true);
-	settings.Add("Reset timer when loading a new mission", false);
-	settings.Add("Reset timer when loading a new mission, but only from the Hub", true);
-	settings.Add("Save game log copy when mission ends", true);
+	settings.Add("Reset timer when loading a new mission", true);
+	settings.Add("Reset timer when loading a new mission, but only from the Hub", false);
+	settings.Add("Save game log copy when mission ends", false);
 	settings.Add("Save game log copy after game is closed", true);
 	settings.Add("Parse log from start", true);
 	
@@ -255,7 +258,9 @@ startup
 		{ "CM04_BankTower", 	"Union Tower"},
 		{ "CM04_BankTower-02", 	"Relay Tower"},
 		{ "Hub", 				"Hub"},
-		{ "Limbo", 				"Limbo"}
+		{ "Limbo", 				"Limbo"},
+		{ "HM01_Chinatown", 	"Junction (Horde)"},
+		{ "HM02_Highway", 		"Highway (Horde)"},
 	};
 	
 	// Known log lines
@@ -298,9 +303,18 @@ startup
 		{ "PartyUpdated_PlayerInfo", 
 			new System.Text.RegularExpressions.Regex(
 				@"""displayName"": ""(.*?)"",.*?""platform"": (\d+),.*?""userId"": ""(.*?)""",
-				System.Text.RegularExpressions.RegexOptions.Singleline) }
+				System.Text.RegularExpressions.RegexOptions.Singleline) },
+		{ "Horde_StartingRound",  new System.Text.RegularExpressions.Regex(@"\[Info\] \[ServerHordeModeSystem\] Starting round: (.*)")}
 	};
 	
+	// Scenes without safe rooms
+	vars.scenesWithoutSaferooms = new List<string>
+	{
+		"Relay Tower",
+		"Junction (Horde)",
+		"Highway (Horde)"
+	};
+
 	// Sections right before safe rooms
 	vars.sectionsBeforeSaferooms = new List<string>
 	{
@@ -327,40 +341,40 @@ startup
 	{
 		if (component.Component.ComponentName.StartsWith("Difficulty"))
 		{
-			vars.DebugOutput("Found difficulty text component: " + component.ToString());
+			vars.DebugOutput("Found difficulty text component.");
 			Action<string> SetDifficultyText = (newText) => 
 			{ 
 				var textSettings = component.Component.GetType().GetProperty("Settings").GetValue(component.Component, null);
 				var currValue = textSettings.GetType().GetProperty("Text2").GetValue(textSettings, null) as string;
 				
-				vars.DebugOutput("Changing difficulty text to " + newText + " (from " + currValue + ").");
+				//vars.DebugOutput("Changing difficulty text to " + newText + " (from " + currValue + ").");
 				textSettings.GetType().GetProperty("Text2").SetValue(textSettings, newText);
 			};
 			vars.SetDifficultyText = SetDifficultyText;
 		}
 		else if (component.Component.ComponentName.StartsWith("Players in party:"))
 		{
-			vars.DebugOutput("Found player display names text component: " + component.ToString());
+			vars.DebugOutput("Found player display names text component.");
 			Action<List<string>> SetPlayersDisplayNames = (newDisplayNames) => 
 			{
 				var textSettings = component.Component.GetType().GetProperty("Settings").GetValue(component.Component, null);
 				var currValue = textSettings.GetType().GetProperty("Text2").GetValue(textSettings, null) as string;
 				var newValue = string.Join(", ", newDisplayNames);
 
-				vars.DebugOutput("Changing players in party text to [" + newValue + "] (from [" + currValue + "]).");
+				//vars.DebugOutput("Changing players in party text to [" + newValue + "] (from [" + currValue + "]).");
 				textSettings.GetType().GetProperty("Text2").SetValue(textSettings, newValue);
 			};
 			vars.SetPlayersDisplayNames = SetPlayersDisplayNames;
 		}
 		else if (component.Component.ComponentName.StartsWith(" ") || component.Component.ComponentName.StartsWith("("))
 		{
-			vars.DebugOutput("Found map name text component: " + component.ToString());
+			vars.DebugOutput("Found map name text component.");
 			Action<string> SetMapNameText = (newText) => 
 			{
 				var textSettings = component.Component.GetType().GetProperty("Settings").GetValue(component.Component, null);
 				var currValue = textSettings.GetType().GetProperty("Text1").GetValue(textSettings, null) as string;
 				
-				vars.DebugOutput("Changing map name to " + newText + " (from " + currValue + ").");
+				//vars.DebugOutput("Changing map name to " + newText + " (from " + currValue + ").");
 				textSettings.GetType().GetProperty("Text1").SetValue(textSettings, newText);
 				textSettings.GetType().GetProperty("Text2").SetValue(textSettings, " ");
 			};
@@ -371,19 +385,28 @@ startup
 
 init
 {
-	var moduleFound = modules.SingleOrDefault(module => 
-		String.Equals(module.ModuleName, "AfterTheFall.exe", StringComparison.OrdinalIgnoreCase));
-		
-	if (moduleFound == null)
+	// For debug without launching VR - uncomment this, and the very first line in this script (//state("LiveSplit"...)
+	// if (version == "")
+	//  	version = "v1.2.35043 (Steam)";
+
+	if (version == "")
 	{
-		vars.DebugOutput("Error: couldn't find the main module (AfterTheFall.exe).");
-	}
-	else
-	{
-		var moduleSize = moduleFound.ModuleMemorySize;
-		var hash = vars.CalcModuleHash(moduleFound);
+		var atfMainExeModule = modules.SingleOrDefault(module => 
+			String.Equals(module.ModuleName, "AfterTheFall.exe", StringComparison.OrdinalIgnoreCase));
 		
-		vars.DebugOutput("Module: [" + moduleFound.ModuleName + "]. Size: [" + moduleSize + "]. MD5 hash: [" + hash + "]");
+		// foreach (var currModule in modules)
+		// 	vars.DebugOutput("Module: " + currModule.ModuleName);
+
+		if (atfMainExeModule == null)
+		{
+			vars.DebugOutput("Error: couldn't find the exe module (AfterTheFall.exe).");
+			return false;
+		}
+
+		var moduleSize = atfMainExeModule.ModuleMemorySize;
+		var hash = vars.CalcModuleHash(atfMainExeModule);
+		
+		vars.DebugOutput("EXE Module: [" + atfMainExeModule.ModuleName + "]. Size: [" + moduleSize + "]. MD5 hash: [" + hash + "]");
 
 		if (hash == "E23DE5E8BAB08636BF41E9548E6A5DF4")
 		{
@@ -397,11 +420,34 @@ init
 			version = "v1.1.34250 (Steam)";
 		}
 		*/
+
+		var atfGameModule = modules.SingleOrDefault(module => 
+			String.Equals(module.ModuleName, "GameAssembly.dll", StringComparison.OrdinalIgnoreCase));
+
+		if (atfGameModule == null)
+		{
+			vars.DebugOutput("Error: couldn't find the main game module (GameAssembly.dll).");
+			return false;
+		}
+
+		moduleSize = atfGameModule.ModuleMemorySize;
+		hash = vars.CalcModuleHash(atfGameModule);
+		
+		vars.DebugOutput("Main game module: [" + atfGameModule.ModuleName + "]. Size: [" + moduleSize + "]. MD5 hash: [" + hash + "]");
+
+		if (hash == "0536A3BB828C0AED653FB1E86C002C1B")
+		{
+			// Module Size: 82661376
+			version = "v1.3.35721 (Steam)";
+		}
+		/*
+		// Fallback for possible older versions.
+		else if (moduleSize == 3805184)
+		{
+			version = "v1.1.34250 (Steam)";
+		}
+		*/
 	}
-	
-	// For debug without launching VR - uncomment this, and the very first line in this script (//state("LiveSplit"...)
-	// if (version == "")
-	// 	version = "v1.2.35043 (Steam)";
 	
 	if (version == "")
 	{
@@ -412,6 +458,9 @@ init
 	// Open the log file
 	var appDataDir = System.Environment.GetEnvironmentVariable("appdata");
 	string logPath = appDataDir + @"\..\LocalLow\Vertigo Games\AfterTheFall\Player.log";
+	//logPath = appDataDir + @"\..\LocalLow\Vertigo Games\AfterTheFall\LiveSplit_2022-03-10_23_50.Player.log";
+	//logPath = appDataDir + @"\..\LocalLow\Vertigo Games\AfterTheFall\LiveSplit_2022-03-11_03_36.Player.log";
+	//logPath = appDataDir + @"\..\LocalLow\Vertigo Games\AfterTheFall\Horde_Over30\Player.log";
 	
 	if (!File.Exists(logPath)) 
 	{
@@ -436,6 +485,11 @@ init
 
 update
 {
+	// When we return false here, it prevents the rest of the actions from running (start, split, reset etc.).
+	// This is important for performance!
+    if (version == "" || vars == null || vars.logPath == null)
+		return false;
+
 	if (vars.NextUpdate != null)
 	{
 		if (System.DateTime.Now < vars.NextUpdate)
@@ -445,11 +499,6 @@ update
 		}
 		vars.NextUpdate = null;
 	}
-	
-	// When we return false here, it prevents the rest of the actions from running (start, split, reset etc.).
-	// This is important for performance!
-    if (version == "" || vars.logPath == null)
-		return false;
 		
 	// Read lines from the log and search for known ones...
 
@@ -503,12 +552,12 @@ update
 					(settings["Reset timer when loading a new mission, but only from the Hub"] && vars.sceneName == "Hub"))
 				{
 					vars.DebugOutput("Resetting timer before loading a new mission.");
-					vars.DebugOutput("timer.CurrentPhase: " + timer.CurrentPhase + ", timer.IsGameTimeInitialized: " + 
-						timer.IsGameTimeInitialized + " , timer.IsGameTimePaused: " + timer.IsGameTimePaused);
+					//vars.DebugOutput("timer.CurrentPhase: " + timer.CurrentPhase + ", timer.IsGameTimeInitialized: " + 
+					//	timer.IsGameTimeInitialized + " , timer.IsGameTimePaused: " + timer.IsGameTimePaused);
 					vars.timerModel.Reset();
 					timer.IsGameTimePaused = true;
-					vars.DebugOutput("timer.CurrentPhase: " + timer.CurrentPhase + ", timer.IsGameTimeInitialized: " + 
-						timer.IsGameTimeInitialized + " , timer.IsGameTimePaused: " + timer.IsGameTimePaused);
+					// vars.DebugOutput("timer.CurrentPhase: " + timer.CurrentPhase + ", timer.IsGameTimeInitialized: " + 
+					// 	timer.IsGameTimeInitialized + " , timer.IsGameTimePaused: " + timer.IsGameTimePaused);
 				}
 				
 				vars.sceneName = newSceneName;
@@ -551,15 +600,19 @@ update
 						"GameTime: " + vars.gameTimeOnSceneStart.ToString());
 
 					// In relay tower the elevator doors open when all players are connected. There is no safe room door to exit.
-					if (vars.sceneName == "Relay Tower")
-					{
-						vars.currSection = "Entrance Elevator";
-						vars.isInSafeRoom = false;
-						vars.SplitTimer();
-					}
-					
-					if (!settings["Pause timer when all players enter a safe room"] || vars.sceneName == "Relay Tower")
+					// In horde mode maps there is no door to open.
+					var doesSceneStartsInSaferoom = !vars.scenesWithoutSaferooms.Contains(vars.sceneName);
+					//vars.DebugOutput("vars.sceneName: " + vars.sceneName + ", doesSceneStartsInSaferoom: " + doesSceneStartsInSaferoom);
+
+					if (!doesSceneStartsInSaferoom || !settings["Pause timer when all players enter a safe room"])
 						vars.StartOrUnpauseGameTime();
+					
+					if (!doesSceneStartsInSaferoom)
+					{
+						vars.isInSafeRoom = false;
+						timer.CurrentSplitIndex++;
+						vars.DebugOutput("Skipped to next section without using split (" + timer.CurrentSplit.Name + ")");
+					}
 
 					vars.DelayNextUpdate("GameplayInitiated.");
 					continue;
@@ -718,7 +771,8 @@ update
 			// Mission ended (maybe succesfully, maybe not. Maybe was disconnected).
 			string reason = match.Groups[1].Value;
 			
-			vars.DebugOutput("Session ended. Reason was: " + reason + ". timer.CurrentSplit.Name: " + timer.CurrentSplit.Name);
+			vars.DebugOutput("Session ended. Reason was: " + reason + ". Current split: " + 
+				(timer.CurrentSplit == null ? "None (null)" : timer.CurrentSplit.Name));
 			vars.DebugOutput(currLine); 
 			
 			if (timer.CurrentPhase == TimerPhase.Running)
@@ -864,6 +918,16 @@ update
 
 			vars.SetPlayersDisplayNames(displayNames);
 			continue;
+		}
+
+		match = vars.regexes["Horde_StartingRound"].Match(currLine);
+		if (match.Success)
+		{
+			// Split every 5 rounds (on round 1, 6, 11, 16 etc.)
+			var waveNumber = int.Parse(match.Groups[1].Value);
+			vars.DebugOutput("Starting new wave (" + waveNumber + "). timer.CurrentTime: " + timer.CurrentTime);
+			if (waveNumber > 5 && waveNumber % 5 == 1)
+				vars.SplitTimer();
 		}
 
 		#endregion // Find known lines
