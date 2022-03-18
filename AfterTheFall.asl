@@ -236,7 +236,7 @@ startup
 	vars.currSplit 			= null;
 	
 	// Settings
-	settings.Add("Pause timer when all players enter a safe room", true);
+	settings.Add("Pause timer when all players enter a safe room", false);
 	settings.Add("Split timer when all players enter a safe room", true);
 	settings.Add("Split timer when pushing button to exit safe room", true);
 	settings.Add("Split timer between mission sections", true);
